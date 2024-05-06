@@ -23,13 +23,12 @@
   }
 }
 
-.btnlogin {
+.botones {
   width: 100%;
   display: block;
 }
 
-/* .mat-card-actions div button{
-  display: block;
-  margin-bottom: 100px;
-} */
+.btnlogin {
+  width: 100%;
+}
 
