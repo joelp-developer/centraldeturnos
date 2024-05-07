@@ -13,6 +13,8 @@ import {FormControl, Validators, FormsModule, ReactiveFormsModule} from '@angula
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-registro',
   standalone: true,
@@ -34,6 +36,8 @@ export class RegistroComponent implements OnInit {
     appId: "1:622494120201:web:87f7f420e74c4a82eefbd8"
   }
 
+  constructor(private router: Router) { }
+
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
   passwordFormControl = new FormControl('', [Validators.required]);
 
@@ -52,10 +56,13 @@ export class RegistroComponent implements OnInit {
     if (email !== null && password !== null) {
       createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
+
         const user = userCredential.user;
+        //agregar un alerta y enviarlo a la pagina dellogin
         console.log(user);
-        // ...
+
+        this.router.navigate(['/login']);
+
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -65,6 +72,10 @@ export class RegistroComponent implements OnInit {
       console.error('El correo electrónico es null');
     }
 
+  }
+
+  volver(){
+    this.router.navigate(['/login']);
   }
 }
 

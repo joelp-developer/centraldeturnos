@@ -12,6 +12,8 @@ import {MatIconModule} from '@angular/material/icon';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword  } from "firebase/auth";
 
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -32,6 +34,8 @@ export class LoginComponent implements OnInit {
     messagingSenderId: "622494120201",
     appId: "1:622494120201:web:87f7f420e74c4a82eefbd8"
   }
+
+  constructor(private router: Router) { }
 
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
   passwordFormControl = new FormControl('', [Validators.required]);
@@ -54,6 +58,7 @@ export class LoginComponent implements OnInit {
         // Signed in
         const user = userCredential.user;
         console.log(user);
+        this.router.navigate(['/home']);
         // ...
       })
       .catch((error) => {
@@ -64,6 +69,14 @@ export class LoginComponent implements OnInit {
       console.error('El correo electrónico es null');
     }
 
+  }
+
+  registro(){
+      this.router.navigate(['/registro']);
+  }
+
+  olvidaste(){
+    this.router.navigate(['/forgot']);
   }
 }
 
