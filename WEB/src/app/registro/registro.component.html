@@ -6,36 +6,60 @@
     <mat-card-content>
       <p>Registrate</p>
 
-      <form class="example-form">
+      <form class="example-form" [formGroup]="RegistroForm" (ngSubmit)="registro()">
         <mat-form-field class="example-full-width">
           <mat-label>Email</mat-label>
           <mat-icon matSuffix>email</mat-icon>
-          <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. pat@example.com">
-          @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
-            <mat-error>Please enter a valid email address</mat-error>
-          }
-          @if (emailFormControl.hasError('required')) {
-            <mat-error>Email is <strong>required</strong></mat-error>
-          }
+          <input type="email" matInput placeholder="Ex. pat@example.com" formControlName="Email">
         </mat-form-field>
         <br>
         <mat-form-field class="example-full-width">
           <mat-label>Enter your password</mat-label>
-          <input matInput [type]="hide ? 'password' : 'text'" [formControl]="passwordFormControl">
-          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          <input matInput [type]="hide1 ? 'password' : 'text'" formControlName="Contrasenia">
+          <button mat-icon-button matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide1" type="button">
+            <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
         </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+          <mat-label>Repite tu password</mat-label>
+          <input matInput [type]="hide2 ? 'password' : 'text'" formControlName="passwordb">
+          <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2" type="button">
+            <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+          <mat-label>Ingrese el Nombre</mat-label>
+          <mat-icon matSuffix>person</mat-icon>
+          <input type="text" matInput formControlName="Nombre">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+          <mat-label>Ingrese el Apellido</mat-label>
+          <mat-icon matSuffix>person</mat-icon>
+          <input type="text" matInput formControlName="Apellido">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+          <mat-label>Ingrese el Telefono</mat-label>
+          <mat-icon matSuffix>phone</mat-icon>
+          <input type="text" matInput formControlName="Telefono">
+        </mat-form-field>
+        <br>
+
+        <mat-card-actions class="botones">
+
+          <button class="btnlogin" mat-flat-button color="primary" type="submit" [disabled]="RegistroForm.invalid">ACEPTAR</button>
+
+          <button class="btnlogin" mat-flat-button color="accent" (click)="volver()">Volver al LOGIN</button>
+
+        </mat-card-actions>
+
       </form>
       <mat-divider></mat-divider>
     </mat-card-content>
-    <mat-card-actions class="botones">
 
-      <button class="btnlogin" mat-flat-button color="primary" (click)="registro()">ACEPTAR</button>
-
-      <button class="btnlogin" mat-flat-button color="accent" (click)="volver()">Volver al LOGIN</button>
-
-    </mat-card-actions>
   </mat-card>
 </div>
 

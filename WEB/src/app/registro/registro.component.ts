@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatButtonModule} from '@angular/material/button';
@@ -8,11 +8,9 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 
-import {FormControl, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { Validators, FormsModule, ReactiveFormsModule, FormBuilder, FormGroup} from '@angular/forms';
 
-import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
+import { FirebaseService } from '../service/firebase.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -25,51 +23,50 @@ import { Router } from '@angular/router';
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
 })
-export class RegistroComponent implements OnInit {
+export class RegistroComponent {
 
-  firebaseConfig ={
-    apiKey: "AIzaSyCra3mUK35JRVyECl278grFK1Wgsz7-qpk",
-    authDomain: "centraldeturnos-ab669.firebaseapp.com",
-    projectId: "centraldeturnos-ab669",
-    storageBucket: "centraldeturnos-ab669.appspot.com",
-    messagingSenderId: "622494120201",
-    appId: "1:622494120201:web:87f7f420e74c4a82eefbd8"
-  }
+  RegistroForm: FormGroup;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private firebaseService: FirebaseService,
+    private formBuilder: FormBuilder,
 
-  emailFormControl = new FormControl('', [Validators.required, Validators.email]);
-  passwordFormControl = new FormControl('', [Validators.required]);
+  ) {
 
-  hide = true;
+    this.RegistroForm = this.formBuilder.group({
+      Email : ['', [Validators.required, Validators.email]],
+      Contrasenia : ['', [Validators.required]],
+      passwordb : ['', [Validators.required]],
+      Nombre : ['', [Validators.required]],
+      Apellido : ['', [Validators.required]],
+      Telefono : ['', [Validators.required]],
+      IdTipoUsuario : ['2', [Validators.required]]
+    })
 
-  ngOnInit(): void {
-    const app = initializeApp(this.firebaseConfig);
-  }
+   }
+
+
+
+  hide1 = true;
+  hide2 = true;
 
   registro(){
-    const auth = getAuth();
 
-    const email = this.emailFormControl.value;
-    const password = this.passwordFormControl.value;
+    if (this.RegistroForm.value.Contrasenia != this.RegistroForm.value.passwordb) {
+      console.log("dististas claves")
+      alert("Las claves no coinciden");
+      this.RegistroForm.setValue({Email: this.RegistroForm.value.Email, Contrasenia: '', passwordb: '',
+                                  Nombre: this.RegistroForm.value.Nombre, Apellido: this.RegistroForm.value.Apellido,
+                                  Telefono: this.RegistroForm.value.Telefono, IdTipoUsuario: this.RegistroForm.value.IdTipoUsuario});
+    }
+    else{
+      if (this.RegistroForm.value.email !== null && this.RegistroForm.value.password !== null) {
+        this.firebaseService.Registro(this.RegistroForm);
 
-    if (email !== null && password !== null) {
-      createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-
-        const user = userCredential.user;
-        //agregar un alerta y enviarlo a la pagina dellogin
-        console.log(user);
-
-        this.router.navigate(['/login']);
-
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-    }else{
-      console.error('El correo electrónico es null');
+      }else{
+        console.error('El correo electrónico es null');
+      }
     }
 
   }

@@ -3,6 +3,7 @@ import { Request, Response } from "express"
 import { Usuario } from "../entity/User"
 import { validate } from "class-validator"
 import { AppDataSource } from "../data-source"
+import Encryptacion  from "../utils/Encryptacion"
 
 class UserController {
     
@@ -34,12 +35,13 @@ class UserController {
     static newUser= async (req:Request,res:Response) => {
         const {Nombre, Apellido, Email, Telefono, Contrasenia, IdTipoUsuario} = req.body;
         const user = new Usuario();
-
+        console.log(req.body)
+        console.log(Contrasenia)
         user.Nombre = Nombre;
         user.Apellido = Apellido;
         user.Email = Email;
         user.Telefono = Telefono;
-        user.Contraseña = Contrasenia;
+        user.Contraseña = await Encryptacion.encriptar(Contrasenia);
         user.IdTipoUsuario = IdTipoUsuario;
         
         const errors = await validate(user);
@@ -48,19 +50,16 @@ class UserController {
             return res.status(400).send(errors);
         }
 
-        //Hash password
-
 
         const userRepository = AppDataSource.getRepository(Usuario);
         try {
-            const newUser = await userRepository.save(user);
-            res.send(newUser);
+           await userRepository.save(user);            
         }catch(error) {
-            res.status(409).json({message:'El usuario ya existe'});
+            return res.status(409).json({message:'El usuario ya existe'});
         }
 
         //all ok
-        res.send('user create');
+        return res.send('user create');
     }
 
     //Update user
