@@ -3,6 +3,7 @@ import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
 import { ForgotpassComponent } from './forgotpass/forgotpass.component';
 import { HomeComponent } from './home/home.component';
+import { RegistromedicoComponent } from './registromedico/registromedico.component';
 
 export const routes: Routes = [
   {
@@ -13,6 +14,9 @@ export const routes: Routes = [
   },
   {
     path: 'registro',component:RegistroComponent
+  },
+  {
+    path: 'registroMedico',component:RegistromedicoComponent
   },
   {
     path:'forgot',component:ForgotpassComponent

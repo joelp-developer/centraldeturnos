@@ -7,6 +7,8 @@ import { initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword  } from "firebase/auth";
 import { BaseSQLService } from './base-sql.service';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,7 +17,7 @@ export class FirebaseService {
 
   constructor(
     private router: Router,
-    private baseSQLService: BaseSQLService
+    private baseSQLService: BaseSQLService,
 
   ) { }
 
@@ -68,11 +70,19 @@ export class FirebaseService {
         console.log(usuario.value);
         this.baseSQLService.postUsuario(usuario);
 
+        if(usuario.value.IdTipoUsuario == 1){
+          console.log("es medico");
+          this.baseSQLService.postMedico(usuario);
+        }
+
         this.router.navigate(['/login']);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        console.log("error" + errorMessage);
+        alert("Verificar corre Ya registrado");
+
       });
   }
 }

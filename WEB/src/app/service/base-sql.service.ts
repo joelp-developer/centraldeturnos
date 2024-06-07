@@ -26,4 +26,14 @@ export class BaseSQLService {
       console.log(data);},
        (err) => {   console.error(err);});
   };
+
+  postMedico(Medico: FormGroup) {
+    return this.http.post(`${this.apiUrl}/medicos`, Medico.value).subscribe((data: any) => {
+      console.log(data);},
+       (err) => {   console.error(err);});
+  }
+
+  getallEspecialidades() {
+    return this.http.get(`${this.apiUrl}/especialidades`);
+  }
 }
