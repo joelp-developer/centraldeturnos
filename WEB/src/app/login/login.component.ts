@@ -10,7 +10,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { FirebaseService }  from '../service/firebase.service';
 
-import { BaseSQLService } from '../service/base-sql.service';
 
 
 
@@ -32,7 +31,6 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private firebaseService: FirebaseService,
-    private baseSQLService: BaseSQLService
   ) { }
 
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);

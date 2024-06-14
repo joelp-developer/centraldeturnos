@@ -18,6 +18,10 @@ export class BaseSQLService {
     return this.http.get(`${this.apiUrl}/usuarios`);
   }
 
+  getbyUsuario(id: string) {
+    return this.http.get(`${this.apiUrl}/usuarios/${id}`);
+  }
+
   postUsuario(Usuario: FormGroup) {
 
     console.log(Usuario.value);
@@ -36,4 +40,6 @@ export class BaseSQLService {
   getallEspecialidades() {
     return this.http.get(`${this.apiUrl}/especialidades`);
   }
+
+
 }

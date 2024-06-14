@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { initializeApp } from 'firebase/app';
 
-import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword  } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword  } from "firebase/auth";
 import { BaseSQLService } from './base-sql.service';
 
 
@@ -31,15 +31,21 @@ export class FirebaseService {
   }
   app = initializeApp(this.firebaseConfig);
   auth = getAuth(this.app);
+  user = this.auth.currentUser;
 
   login(email: string, password: string){
     signInWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        this.router.navigate(['/home']);
-        // ...
+        this.baseSQLService.getbyUsuario(email).subscribe((data: any) => {
+          console.log(data.IdTipoUsuario);
+          if(data.IdTipoUsuario == 1){
+            this.router.navigate(['/homemedico']);
+          }else{
+            this.router.navigate(['/home']);
+          }
+
+        })
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -85,4 +91,18 @@ export class FirebaseService {
 
       });
   }
+
+
+
+  // updatePASWORD( newPassword: string){
+  //   if(this.auth.currentUser){
+  //     updatePassword(this.auth.currentUser, newPassword).then((data) => {
+  //       // Update successful.
+  //     }).catch((error) => {
+  //       // An error ocurred
+  //       // ...
+  //       console.log(error)
+  //     });
+  //   }
+  // }
 }
