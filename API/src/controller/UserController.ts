@@ -34,9 +34,7 @@ class UserController {
     //Cretae new user
     static newUser= async (req:Request,res:Response) => {
         const {Nombre, Apellido, Email, Telefono, Contrasenia, IdTipoUsuario} = req.body;
-        const user = new Usuario();
-        console.log(req.body)
-        console.log(Contrasenia)
+        const user = new Usuario();        
         user.Nombre = Nombre;
         user.Apellido = Apellido;
         user.Email = Email;
@@ -66,34 +64,50 @@ class UserController {
     static editUser= async (req:Request,res:Response) => {
         let user;
         const {id} = req.params;
-        const {Nombre, Apellido, Email, Telefono, Contrasenia, IdTipoUsuario} = req.body;
+        const {Nombre, Apellido, Email, Telefono, Contraseña, IdTipoUsuario} = req.body;
         
         const userRepository = AppDataSource.getRepository(Usuario);
-
+        
         //Try get user
         try {
             user = await userRepository.findOneOrFail({where:{Email: id}});
-            user.Nombre = Nombre;
-            user.Apellido = Apellido;
-            user.Email = Email;
-            user.Telefono = Telefono;
-            user.Contraseña = Contrasenia;
-            user.IdTipoUsuario = IdTipoUsuario;
+            
+            user.Nombre = Nombre != undefined  ? Nombre : user.Nombre;
+            user.Apellido = Apellido != undefined ? Apellido : user.Apellido;
+            user.Email = Email != undefined? Email : user.Email;
+            user.Telefono = Telefono != undefined ? Telefono : user.Telefono;
+            user.Contraseña =  Contraseña != undefined ? await Encryptacion.encriptar(Contraseña) : user.Contraseña;
+            user.IdTipoUsuario = IdTipoUsuario != undefined ? IdTipoUsuario : user.IdTipoUsuario;
         }catch(error) {
+            console.log(error);
             return res.status(404).json({message:'No existen usuarios'});
         }
-
+        
         const errors = await validate(user);
         
         if(errors.length > 0) {
             return res.status(400).send(errors);
         }
-
         //Try to save user
         try {
-            await userRepository.save(user);
+            await userRepository
+            .createQueryBuilder()
+            .update(Usuario)
+            .set({
+              Nombre: user.Nombre,
+              Apellido: user.Apellido,
+              Email: user.Email,
+              Telefono: user.Telefono,
+              Contraseña: user.Contraseña,
+              IdTipoUsuario: user.IdTipoUsuario
+              // No incluir idUsuario en la lista de campos a actualizar
+            })
+            .where('Email = :email', { email: id })
+            .execute();
         }catch(error) {
+            console.log(error);
             return res.status(409).json({message:'El usuario ya existe'});
+
         }
 
         res.status(201).json({message:'El usuario se actualizo correctamente'});

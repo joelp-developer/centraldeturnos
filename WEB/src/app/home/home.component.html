@@ -1,1 +1,40 @@
+<div class="container">
 
+  <mat-form-field class="example-full-width">
+    <mat-label for="idEspecialidad">Ingrese el IdEspecialidad</mat-label>
+    <mat-select id="idEspecialidad" (selectionChange)="onEspecialidadChange($event.value)">
+      <mat-option *ngFor="let especialidad of especialidades" [value]="especialidad.idEspecialidad">
+        {{ especialidad.Descripcion }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label for="idmedicos">Seleccione al medico</mat-label>
+    <mat-select id="idmedicos" >
+      <mat-option *ngFor="let Medico of filteredMedicos" [value]="Medico.idMedico">
+        {{ Medico.Nombre }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Choose a date</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate"  (ngModelChange)="onDateChange($event)">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label for="idhorarios">Seleccione Horario</mat-label>
+    <mat-select id="idhorarios" >
+      <mat-option *ngFor="let Horario of horarios" [value]="Horario">
+        {{ Horario }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="example-button-row">
+  <button mat-flat-button>Enviar turno</button>
+  </div>
+</div>

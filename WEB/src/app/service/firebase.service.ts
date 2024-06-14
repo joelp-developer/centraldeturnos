@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { initializeApp } from 'firebase/app';
@@ -38,13 +38,12 @@ export class FirebaseService {
       .then((userCredential) => {
         // Signed in
         this.baseSQLService.getbyUsuario(email).subscribe((data: any) => {
-          console.log(data.IdTipoUsuario);
-          if(data.IdTipoUsuario == 1){
+
+          if(data.IdTipoUsuario === 1){
             this.router.navigate(['/homemedico']);
           }else{
             this.router.navigate(['/home']);
           }
-
         })
       })
       .catch((error) => {
@@ -94,15 +93,19 @@ export class FirebaseService {
 
 
 
-  // updatePASWORD( newPassword: string){
-  //   if(this.auth.currentUser){
-  //     updatePassword(this.auth.currentUser, newPassword).then((data) => {
-  //       // Update successful.
-  //     }).catch((error) => {
-  //       // An error ocurred
-  //       // ...
-  //       console.log(error)
-  //     });
-  //   }
-  // }
+  updatePASWORD( newPassword: string){
+    if(this.auth.currentUser){
+      updatePassword(this.auth.currentUser, newPassword).then((data) => {
+        // Update successful.
+
+        if(this.auth.currentUser?.email){
+          this.baseSQLService.putUsuariopass(this.auth.currentUser.email,newPassword);
+        }
+      }).catch((error) => {
+        // An error ocurred
+        // ...
+        console.log(error)
+      });
+    }
+  }
 }

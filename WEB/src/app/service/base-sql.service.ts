@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +22,21 @@ export class BaseSQLService {
     return this.http.get(`${this.apiUrl}/usuarios/${id}`);
   }
 
-  postUsuario(Usuario: FormGroup) {
+  getMedicos() {
+    return this.http.get(`${this.apiUrl}/medicos`);
+  }
 
-    console.log(Usuario.value);
+  getbyturno(id: string) {
+    return this.http.get(`${this.apiUrl}/turnos/${id}`);
+  }
+
+  postTurno(Turno: FormGroup) {
+    return this.http.post(`${this.apiUrl}/turnos`, Turno.value).subscribe((data: any) => {
+      console.log(data);},
+       (err) => {   console.error(err);});
+  }
+
+  postUsuario(Usuario: FormGroup) {
 
     return this.http.post(`${this.apiUrl}/usuarios`, Usuario.value).subscribe((data: any) => {
       console.log(data);},
@@ -41,5 +53,9 @@ export class BaseSQLService {
     return this.http.get(`${this.apiUrl}/especialidades`);
   }
 
+  putUsuariopass(id: string,password:string) {
 
+    return this.http.put(`${this.apiUrl}/usuarios/${id}`, {Contraseña:password}).subscribe((data: any) => {console.log(data);}
+    , (err) => {   console.error(err);});
+  }
 }

@@ -14,6 +14,6 @@ routes.get("/:id", UserController.getByID);
 routes.post("/", UserController.newUser);
 
 //Update user
-routes.patch("/:id", UserController.editUser);
+routes.put("/:id", UserController.editUser);
 
 export default routes;
