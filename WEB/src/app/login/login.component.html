@@ -22,6 +22,12 @@
         <mat-form-field class="example-full-width">
           <mat-label>Enter your password</mat-label>
           <input matInput [type]="hide ? 'password' : 'text'" [formControl]="passwordFormControl">
+          @if (passwordFormControl.hasError('minlength') && !passwordFormControl.hasError('required')) {
+            <mat-error>Please enter a password</mat-error>
+          }
+          @if (passwordFormControl.hasError('required')) {
+            <mat-error>password is <strong>required</strong></mat-error>
+          }
           <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>

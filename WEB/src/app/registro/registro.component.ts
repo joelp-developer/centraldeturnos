@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatButtonModule} from '@angular/material/button';
@@ -12,6 +12,8 @@ import { Validators, FormsModule, ReactiveFormsModule, FormBuilder, FormGroup} f
 
 import { FirebaseService } from '../service/firebase.service';
 import { Router } from '@angular/router';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-registro',
@@ -36,8 +38,8 @@ export class RegistroComponent {
 
     this.RegistroForm = this.formBuilder.group({
       Email : ['', [Validators.required, Validators.email]],
-      Contrasenia : ['', [Validators.required]],
-      passwordb : ['', [Validators.required]],
+      Contrasenia : ['', [Validators.required,Validators.minLength(4)]],
+      passwordb : ['', [Validators.required,Validators.minLength(4)]],
       Nombre : ['', [Validators.required]],
       Apellido : ['', [Validators.required]],
       Telefono : ['', [Validators.required]],
@@ -46,12 +48,12 @@ export class RegistroComponent {
 
    }
 
-
+   readonly dialog = inject(MatDialog);
 
   hide1 = true;
   hide2 = true;
 
-  registro(){
+  async registro(){
 
     if (this.RegistroForm.value.Contrasenia != this.RegistroForm.value.passwordb) {
       console.log("dististas claves")
@@ -62,8 +64,12 @@ export class RegistroComponent {
     }
     else{
       if (this.RegistroForm.value.email !== null && this.RegistroForm.value.password !== null) {
-        this.firebaseService.Registro(this.RegistroForm);
+        if(!await this.firebaseService.Registro(this.RegistroForm)){
 
+          this.dialog.open(AlertDialogComponent,{
+            data: {title: 'Error', content: 'Usuario ya registrado'}
+          });
+        };
       }else{
         console.error('El correo electrónico es null');
       }

@@ -32,7 +32,23 @@ class TurnosController {
 
     
     static newTurno= async (req:Request,res:Response) => {
+        const {Fecha, Hora,idUsuario,idMedico,Estado} = req.body;
+        const turno = new Turnos();        
+        turno.Fecha = Fecha;
+        turno.Hora = Hora;
+        turno.IdUsuario = idUsuario;
+        turno.idMedico = idMedico;
+        turno.Estado = Estado;
         
+        const tunosRepository = AppDataSource.getRepository(Turnos);
+        try {
+           await tunosRepository.save(turno);            
+        }catch(error) {
+            return res.status(409).json({message:'El usuario ya existe'});
+        }
+
+        //all ok
+        return res.send('turno create');
     }
 
     //Update user

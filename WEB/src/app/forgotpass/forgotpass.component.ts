@@ -31,19 +31,11 @@ export class ForgotpassComponent {
   ) { }
 
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
-  passwordFormControl = new FormControl('', [Validators.required]);
-
-  hide = true;
-
 
   forgot(){
-    const email = this.emailFormControl.value;
 
-    if (email !== null ) {
-      this.firebaseService.forgot(email);
-
-    }else{
-      console.error('El correo electrónico es null');
+    if(this.emailFormControl.value !== null){
+      this.firebaseService.forgot(this.emailFormControl.value);
     }
 
   }

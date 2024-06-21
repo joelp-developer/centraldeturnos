@@ -38,14 +38,12 @@ export class BaseSQLService {
 
   postUsuario(Usuario: FormGroup) {
 
-    return this.http.post(`${this.apiUrl}/usuarios`, Usuario.value).subscribe((data: any) => {
-      console.log(data);},
+    return this.http.post(`${this.apiUrl}/usuarios`, Usuario.value).subscribe((data: any) => {},
        (err) => {   console.error(err);});
   };
 
   postMedico(Medico: FormGroup) {
-    return this.http.post(`${this.apiUrl}/medicos`, Medico.value).subscribe((data: any) => {
-      console.log(data);},
+    return this.http.post(`${this.apiUrl}/medicos`, Medico.value).subscribe((data: any) => {},
        (err) => {   console.error(err);});
   }
 
