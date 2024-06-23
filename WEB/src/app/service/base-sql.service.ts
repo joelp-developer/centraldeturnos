@@ -14,7 +14,6 @@ export class BaseSQLService {
   ) { }
 
   getUsuarios() {
-    console.log(this.http.get(`${this.apiUrl}/usuarios`));
     return this.http.get(`${this.apiUrl}/usuarios`);
   }
 
@@ -54,6 +53,12 @@ export class BaseSQLService {
   putUsuariopass(id: string,password:string) {
 
     return this.http.put(`${this.apiUrl}/usuarios/${id}`, {Contraseña:password}).subscribe((data: any) => {console.log(data);}
+    , (err) => {   console.error(err);});
+  }
+
+
+  putTurno(id: string,estado:string) {
+    return this.http.put(`${this.apiUrl}/turnos/${id}`, {estado:estado}).subscribe((data: any) => {console.log(data);}
     , (err) => {   console.error(err);});
   }
 }

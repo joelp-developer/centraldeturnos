@@ -34,14 +34,28 @@ export class FirebaseService {
   user = this.auth.currentUser;
 
   async login(email: string, password: string): Promise<boolean> {
+    let token:  string='';
     try {
-      await signInWithEmailAndPassword(this.auth, email, password)
+      await signInWithEmailAndPassword(this.auth, email, password).then( async (userCredential) => {
+        console.log(userCredential);
+        token = (await (userCredential.user.getIdTokenResult())).token.toString();
+        localStorage.setItem('token',token);
+      })
+
       const data:any = await this.baseSQLService.getbyUsuario(email).toPromise();
 
       if (data && data.IdTipoUsuario) { // Asegúrate de que data no sea undefined
+
         if (data.IdTipoUsuario === 1) {
+
+          localStorage.setItem('email',data.Email);
+          localStorage.setItem('idTipoUsuario',data.IdTipoUsuario);
+
           this.router.navigate(['/homemedico']);
+
         } else {
+          localStorage.setItem('idTipoUsuario',data.IdTipoUsuario);
+
           this.router.navigate(['/home']);
         }
         return true;

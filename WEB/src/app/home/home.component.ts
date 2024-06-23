@@ -1,4 +1,4 @@
-import { Component,ChangeDetectionStrategy, OnInit} from '@angular/core';
+import { Component,ChangeDetectionStrategy, OnInit, inject} from '@angular/core';
 
 import { Validators, FormsModule, ReactiveFormsModule, FormBuilder, FormGroup} from '@angular/forms';
 
@@ -14,12 +14,16 @@ import {MatButtonModule} from '@angular/material/button';
 import { BaseSQLService } from '../service/base-sql.service';
 import { CommonModule } from '@angular/common';
 
+import { MatDialog } from '@angular/material/dialog';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-home',
   standalone: true,
   providers: [provideNativeDateAdapter()],
   imports: [FormsModule,MatSelectModule,CommonModule,MatDatepickerModule,MatInputModule,
-    MatButtonModule,MatFormFieldModule,ReactiveFormsModule],
+    MatButtonModule,MatFormFieldModule,ReactiveFormsModule,],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -36,39 +40,47 @@ export class HomeComponent implements OnInit{
   selectedHorario: string | undefined;
   turnoseleccionado:FormGroup ;
   selectedMedico: string | undefined;
+
+
   constructor(
     private sqlService: BaseSQLService,
     private formBuilder: FormBuilder,
+    private router: Router
   ) {
 
     this.turnoseleccionado =this.formBuilder.group({
       Fecha: ['',[Validators.required]],
-      Hora: [{value: '', disabled: true},[Validators.required]],
+      Hora: [{ disabled: true},[Validators.required]],
       idUsuario: ['',],
       idMedico: ['',[Validators.required]],
       Estado:['Abierto',[Validators.required]],
     });
   }
 
+  readonly dialog = inject(MatDialog);
+
   ngOnInit(): void {
-    this.sqlService.getallEspecialidades().subscribe((data: any) => {
-      this.especialidades = data;
-    });
+    if(localStorage.getItem('idTipoUsuario')==='1'){
+      this.router.navigate(['/homemedico']);
+    }else{
+      this.sqlService.getallEspecialidades().subscribe((data: any) => {
+        this.especialidades = data;
+      });
 
-    this.sqlService.getMedicos().subscribe((data: any) => {
-      this.medicos = data;
-    });
+      this.sqlService.getMedicos().subscribe((data: any) => {
+        this.medicos = data;
+      });
 
-    this.turnoseleccionado.get('Fecha')?.valueChanges.subscribe(value => {
+      this.turnoseleccionado.get('Hora')?.disable();
 
-      if (value>this.minFecha) {
-        this.turnoseleccionado.get('Hora')?.enable();
-        this.onDateChange(value);
-      } else {
-        this.turnoseleccionado.get('Hora')?.disable();
-      }
-    });
-
+      this.turnoseleccionado.get('idMedico')?.valueChanges.subscribe(value => {
+        if (value) {
+          this.turnoseleccionado.get('Fecha')?.enable();
+        } else {
+          this.turnoseleccionado.get('Fecha')?.disable();
+        }
+      });
+    }
   }
 
 
@@ -77,18 +89,27 @@ export class HomeComponent implements OnInit{
   }
 
   pedirturno(){
+
     const fecha = this.formatDate(this.selectedDate);
-    console.log("hora")
-    console.log(this.selectedHorario);
     this.turnoseleccionado.setValue({
       Fecha: fecha,
       Hora: this.selectedHorario,
       idUsuario: '1',
       idMedico: this.turnoseleccionado.value.idMedico,
       Estado: 'Abierto',
-    })
-    console.log(this.turnoseleccionado.value);
-    //this.sqlService.postTurno(this.turnoseleccionado)
+    });
+    if(this.sqlService.postTurno(this.turnoseleccionado)){
+      console.log("si")
+      this.dialog.open(AlertDialogComponent,{
+        data: {title: 'Solicitud de Turno', content: 'Su Turno ya fue Cargado'}
+      }).afterClosed().subscribe(result => {
+        location.reload();
+      });
+    }else{
+      console.log("no")
+    }
+    this.turnoseleccionado.get('Hora')?.disable();
+
   }
 
   onDateChange(event: any): void {
@@ -97,11 +118,8 @@ export class HomeComponent implements OnInit{
     this.sqlService.getbyturno(formattedDate).subscribe((data: any) => {
 
       if(data.length > 0){
-        console.log("Existen turnos");
-        console.log(data);
         const existingTimes = data.filter((turno: any) => turno.idMedico == this.selectedMedico)
-        //.map((turno: any) => turno.hora);
-        console.log(existingTimes)
+        .map((turno: any) => turno.Hora);
         this.generateHorarios(existingTimes);
       }else{
         console.log("No existen turnos");

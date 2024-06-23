@@ -53,6 +53,18 @@ class TurnosController {
 
     //Update user
     static editUser= async (req:Request,res:Response) => {
+        const {id} = req.params;
+        const{estado} = req.body;
+        console.log(id);
+        console.log(estado);
+
+        const turnosRepository = AppDataSource.getRepository(Turnos);
+        try{
+            await turnosRepository.update(id,{Estado:estado});
+        }catch(error) {
+            return res.status(409).json({message:'El turnocon error'});
+        }
+        return res.send('turno update');
         
     }
 }

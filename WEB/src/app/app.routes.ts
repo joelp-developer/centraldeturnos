@@ -6,6 +6,8 @@ import { HomeComponent } from './home/home.component';
 import { RegistromedicoComponent } from './registromedico/registromedico.component';
 import { HomemedicoComponent } from './homemedico/homemedico.component';
 
+import { authGuard } from './guard/auth.guard';
+
 export const routes: Routes = [
   {
     path: '',component: LoginComponent
@@ -23,10 +25,10 @@ export const routes: Routes = [
     path:'forgot',component:ForgotpassComponent
   },
   {
-    path: 'home', component: HomeComponent
+    path: 'home',canActivate:[authGuard], component: HomeComponent
   },
   {
-    path: 'homemedico', component: HomemedicoComponent
+    path: 'homemedico',canActivate:[authGuard], component: HomemedicoComponent
   },
   {
     path: '**', redirectTo: 'login'
