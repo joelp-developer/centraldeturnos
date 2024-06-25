@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="form-grid" [formGroup]="turnoseleccionado" >
+    <div class="form-grid-item">
+      <mat-form-field class="example-full-width">
+        <mat-label for="idEspecialidad">Ingrese el IdEspecialidad</mat-label>
+        <mat-select id="idEspecialidad" (selectionChange)="onEspecialidadChange($event.value)">
+          <mat-option *ngFor="let especialidad of especialidades" [value]="especialidad.idEspecialidad">
+            {{ especialidad.Descripcion }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-grid-item">
+      <mat-form-field class="example-full-width">
+        <mat-label for="idmedicos">Seleccione al medico</mat-label>
+        <mat-select id="idmedicos" [(ngModel)]="selectedMedico" formControlName="idMedico">
+          <mat-option *ngFor="let Medico of filteredMedicos" [value]="Medico.idMedico">
+            {{ Medico.Nombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-grid-item">
+      <mat-form-field class="example-full-width">
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker" [min]="minFecha" formControlName="Fecha" [(ngModel)]="selectedDate" (ngModelChange)="onDateChange($event)">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="form-grid-item">
+      <mat-form-field class="example-full-width">
+        <mat-label for="idhorarios">Seleccione Horario</mat-label>
+        <mat-select id="idhorarios" [(ngModel)]="selectedHorario" formControlName="Hora">
+          <mat-option *ngFor="let Horario of horarios" [value]="Horario">
+            {{ Horario }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-grid-item">
+      <button mat-flat-button color="primary" [disabled]="turnoseleccionado.invalid" type="submit" (click)="pedirturno()">Enviar turno</button>
+    </div>
+  </div>
+</div>
