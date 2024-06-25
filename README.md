@@ -1,6 +1,6 @@
 # Centralturnos
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.2.
+la Aplicacion se encuentra en el branch APIyWEB
 
 ## Development server
 
