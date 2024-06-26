@@ -1,6 +1,6 @@
 # Centralturnos
 
-la Aplicacion se encuentra en el branch APIyWEB
+la Aplicacion se Base en un sistema de toma de Turno Donde el usuario puede elejir una especialidad , medico ,Fecha y hora para ser atendido y el medico poder ver sus pasientes a atender 
 
 ## Api
 
