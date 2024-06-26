@@ -9,7 +9,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {provideNativeDateAdapter} from '@angular/material/core';
 
 import {MatButtonModule} from '@angular/material/button';
-
+import { MatIconModule } from '@angular/material/icon';
 
 import { BaseSQLService } from '../service/base-sql.service';
 import { CommonModule } from '@angular/common';
@@ -23,7 +23,7 @@ import { Router } from '@angular/router';
   standalone: true,
   providers: [provideNativeDateAdapter()],
   imports: [FormsModule,MatSelectModule,CommonModule,MatDatepickerModule,MatInputModule,
-    MatButtonModule,MatFormFieldModule,ReactiveFormsModule,],
+    MatButtonModule,MatFormFieldModule,ReactiveFormsModule,MatIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit{
   turnoseleccionado:FormGroup ;
   selectedMedico: string | undefined;
 
-
+  showOptions = false;
   constructor(
     private sqlService: BaseSQLService,
     private formBuilder: FormBuilder,
@@ -150,5 +150,18 @@ export class HomeComponent implements OnInit{
         this.horarios.push(time);
       }
     }
+  }
+
+  toggleOptions() {
+    this.showOptions = !this.showOptions;
+  }
+  option1Action() {
+    // Acción para la opción 1
+    console.log('Opción 1 seleccionada');
+  }
+
+  Logout() {
+    this.router.navigate(['/login']);
+    localStorage.clear();
   }
 }

@@ -1,3 +1,16 @@
+<div class="fab-container">
+  <button mat-fab color="primary" (click)="toggleOptions()">
+    <mat-icon >home</mat-icon>
+  </button>
+  <div class="fab-options" *ngIf="showOptions">
+    <button mat-mini-fab color="accent" (click)="option1Action()">
+      <mat-icon>view_timeline</mat-icon>
+    </button>
+    <button mat-mini-fab color="warn" (click)="Logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</div>
 <div class="container">
   <div class="form-grid" [formGroup]="turnoseleccionado" >
     <div class="form-grid-item">

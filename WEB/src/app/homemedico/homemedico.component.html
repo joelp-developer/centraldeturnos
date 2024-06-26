@@ -1,3 +1,16 @@
+<div class="fab-container">
+  <button mat-fab color="primary" (click)="toggleOptions()">
+    <mat-icon >home</mat-icon>
+  </button>
+  <div class="fab-options" *ngIf="showOptions">
+    <button mat-mini-fab color="accent" (click)="option1Action()">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-mini-fab color="warn" (click)="Logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</div>
 <div class="constainer">
   <mat-form-field>
     <mat-label>Filter</mat-label>
@@ -57,9 +70,12 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef> Acciones </th>
           <td mat-cell *matCellDef="let element">
-
-            <button mat-button (click)="updateEstado(element, 'Atendiendo')" matTooltip="Marcar como Atendiendo. Cambia el estado a 'Atendiendo'"><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="check"/></button>
-            <button mat-button (click)="updateEstado(element, 'Cerrado')" matTooltip="Marcar como Cerrado. Cambia el estado a 'Cerrado'"><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="close"/></button>
+            <button mat-mini-fab color="primary" (click)="updateEstado(element, 'Atendiendo')" matTooltip="Marcar como Atendiendo. Cambia el estado a 'Atendiendo'">
+              <mat-icon >check</mat-icon>
+            </button>
+            <button mat-mini-fab color="warn" (click)="updateEstado(element, 'Cerrado')" matTooltip="Marcar como Cerrado. Cambia el estado a 'Cerrado'">
+              <mat-icon >close</mat-icon>
+            </button>
           </td>
         </ng-container>
 

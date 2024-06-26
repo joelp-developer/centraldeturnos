@@ -41,3 +41,28 @@
 
 
 
+.fab-container button {
+  width: 56px;
+  height: 56px;
+}
+
+.fab-container {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.fab-options {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.fab-options button {
+  margin-top: 10px;
+}
+

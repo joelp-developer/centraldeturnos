@@ -10,6 +10,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 
 import {MatIconModule} from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 import { BaseSQLService } from '../service/base-sql.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,7 +21,8 @@ import { Router } from '@angular/router';
   selector: 'app-homemedico',
   standalone: true,
   imports: [MatTableModule,MatInputModule,MatFormFieldModule,MatGridListModule
-    ,MatCardModule,MatDatepickerModule,FormsModule, ReactiveFormsModule,MatIconModule,MatTooltipModule
+    ,MatCardModule,MatDatepickerModule,FormsModule, ReactiveFormsModule,MatIconModule,
+    MatTooltipModule, MatButtonModule,CommonModule
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './homemedico.component.html',
@@ -32,6 +35,7 @@ export class HomemedicoComponent implements OnInit {
 
   displayedColumns: string[] = ['idTurno', 'Fecha', 'Hora', 'IdUsuario', 'idMedico', 'Estado', 'actions'];
   dataSource = new MatTableDataSource<any>();
+  showOptions = false;
 
   constructor(
     private sqlService: BaseSQLService,
@@ -107,6 +111,19 @@ export class HomemedicoComponent implements OnInit {
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
+  }
+
+  toggleOptions() {
+    this.showOptions = !this.showOptions;
+  }
+  option1Action() {
+    // Acción para la opción 1
+    console.log('Opción 1 seleccionada');
+  }
+
+  Logout() {
+    this.router.navigate(['/login']);
+    localStorage.clear();
   }
 
 
