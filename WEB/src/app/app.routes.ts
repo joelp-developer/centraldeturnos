@@ -7,30 +7,46 @@ import { RegistromedicoComponent } from './registromedico/registromedico.compone
 import { HomemedicoComponent } from './homemedico/homemedico.component';
 
 import { authGuard } from './guard/auth.guard';
+import { PerfilComponent } from './perfil/perfil.component';
 
 export const routes: Routes = [
   {
-    path: '',component: LoginComponent
+    path: '',
+    component: LoginComponent,
   },
   {
-    path: 'login',component:LoginComponent
+    path: 'login',
+    component: LoginComponent,
   },
   {
-    path: 'registro',component:RegistroComponent
+    path: 'registro',
+    component: RegistroComponent,
   },
   {
-    path: 'registroMedico',component:RegistromedicoComponent
+    path: 'registroMedico',
+    component: RegistromedicoComponent,
   },
   {
-    path:'forgot',component:ForgotpassComponent
+    path: 'forgot',
+    component: ForgotpassComponent,
   },
   {
-    path: 'home',canActivate:[authGuard], component: HomeComponent
+    path: 'home',
+    canActivate: [authGuard],
+    component: HomeComponent,
   },
   {
-    path: 'homemedico',canActivate:[authGuard], component: HomemedicoComponent
+    path: 'perfil',
+    canActivate: [authGuard],
+    component: PerfilComponent,
   },
   {
-    path: '**', redirectTo: 'login'
-  }
+    path: 'homemedico',
+    canActivate: [authGuard],
+    component: HomemedicoComponent,
+  },
+  {
+    path: '**',
+    redirectTo: 'login',
+  },
 ];
