@@ -4,71 +4,115 @@
       <mat-card-title>Central de Turnos</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p>Registrate Medico</p>
+      <p>Registro Profesional Médico</p>
 
-      <form class="example-form" [formGroup]="RegistroForm" (ngSubmit)="registro()">
+      <form
+        class="example-form"
+        [formGroup]="RegistroForm"
+        (ngSubmit)="registro()"
+      >
         <mat-form-field class="example-full-width">
-          <mat-label>Email</mat-label>
+          <mat-label>Mail</mat-label>
           <mat-icon matSuffix>email</mat-icon>
-          <input type="email" matInput placeholder="Ex. pat@example.com" formControlName="Email">
+          <input
+            type="email"
+            matInput
+            placeholder="usuario@mail.com"
+            formControlName="Email"
+          />
         </mat-form-field>
-        <br>
+        <br />
         <mat-form-field class="example-full-width">
-          <mat-label>Enter your password</mat-label>
-          <input matInput [type]="hide1 ? 'password' : 'text'" formControlName="Contrasenia">
-          <button mat-icon-button matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide1" type="button">
-            <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+          <mat-label>Ingrese la Contraseña</mat-label>
+          <input
+            matInput
+            [type]="hide1 ? 'password' : 'text'"
+            formControlName="Contrasenia"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide1 = !hide1"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide1"
+            type="button"
+          >
+            <mat-icon>{{ hide1 ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
         </mat-form-field>
-        <br>
+        <br />
         <mat-form-field class="example-full-width">
-          <mat-label>Repite tu password</mat-label>
-          <input matInput [type]="hide2 ? 'password' : 'text'" formControlName="passwordb">
-          <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2" type="button">
-            <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+          <mat-label>Repita la Contraseña</mat-label>
+          <input
+            matInput
+            [type]="hide2 ? 'password' : 'text'"
+            formControlName="passwordb"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide2 = !hide2"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide2"
+            type="button"
+          >
+            <mat-icon>{{ hide2 ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
         </mat-form-field>
-        <br>
+        <br />
         <mat-form-field class="example-full-width">
           <mat-label>Ingrese el Nombre</mat-label>
           <mat-icon matSuffix>person</mat-icon>
-          <input type="text" matInput formControlName="Nombre">
+          <input type="text" matInput formControlName="Nombre" />
         </mat-form-field>
-        <br>
+        <br />
         <mat-form-field class="example-full-width">
           <mat-label>Ingrese el Apellido</mat-label>
           <mat-icon matSuffix>person</mat-icon>
-          <input type="text" matInput formControlName="Apellido">
+          <input type="text" matInput formControlName="Apellido" />
         </mat-form-field>
-        <br>
+        <br />
         <mat-form-field class="example-full-width">
-          <mat-label for="idEspecialidad">Ingrese el IdEspecialidad</mat-label>
-          <mat-select id="idEspecialidad" formControlName="idEspecialidad" >
-            <mat-option *ngFor="let especialidad of especialidades" [value]="especialidad.idEspecialidad">
+          <mat-label for="idEspecialidad">Especialidad</mat-label>
+          <mat-select id="idEspecialidad" formControlName="idEspecialidad">
+            <mat-option
+              *ngFor="let especialidad of especialidades"
+              [value]="especialidad.idEspecialidad"
+            >
               {{ especialidad.Descripcion }}
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <br>
+        <br />
         <mat-form-field class="example-full-width">
           <mat-label>Ingrese el Telefono</mat-label>
           <mat-icon matSuffix>phone</mat-icon>
-          <input type="text" matInput formControlName="Telefono">
+          <input type="text" matInput formControlName="Telefono" />
         </mat-form-field>
-        <br>
+        <br />
 
         <mat-card-actions class="botones">
+          <button
+            class="btnlogin"
+            mat-flat-button
+            color="primary"
+            type="submit"
+            [disabled]="RegistroForm.invalid"
+          >
+            Aceptar
+          </button>
 
-          <button class="btnlogin" mat-flat-button color="primary" type="submit" [disabled]="RegistroForm.invalid">ACEPTAR</button>
-
-          <button class="btnlogin" mat-flat-button color="accent" (click)="volver()">Volver al LOGIN</button>
-
+          <button
+            class="btnlogin"
+            mat-flat-button
+            color="accent"
+            (click)="volver()"
+          >
+            Volver al Login
+          </button>
         </mat-card-actions>
-
       </form>
       <mat-divider></mat-divider>
     </mat-card-content>
-
   </mat-card>
 </div>
-

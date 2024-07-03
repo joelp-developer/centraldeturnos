@@ -3,10 +3,23 @@
   justify-content: center; /* Centrar horizontalmente */
   align-items: center; /* Centrar verticalmente */
   height: 100%; /* Ajustar al 100% del alto de la ventana */
-
 }
 .example-card {
   max-width: 400px;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(https://www.contmed.com.br/site/wp-content/uploads/2024/03/200324.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: blur(2px);
+  z-index: -1;
 }
 
 /* Estilos para pantallas pequeñas (teléfonos) */

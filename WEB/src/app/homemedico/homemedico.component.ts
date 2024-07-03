@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatInputModule} from '@angular/material/input';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatCardModule} from '@angular/material/card';
-import {provideNativeDateAdapter} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
@@ -20,9 +20,19 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-homemedico',
   standalone: true,
-  imports: [MatTableModule,MatInputModule,MatFormFieldModule,MatGridListModule
-    ,MatCardModule,MatDatepickerModule,FormsModule, ReactiveFormsModule,MatIconModule,
-    MatTooltipModule, MatButtonModule,CommonModule
+  imports: [
+    MatTableModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatGridListModule,
+    MatCardModule,
+    MatDatepickerModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatButtonModule,
+    CommonModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './homemedico.component.html',
@@ -30,41 +40,47 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomemedicoComponent implements OnInit {
+  selectedDate: Date = new Date();
 
-  selectedDate: Date= new Date()
-
-  displayedColumns: string[] = ['idTurno', 'Fecha', 'Hora', 'IdUsuario', 'idMedico', 'Estado', 'actions'];
+  displayedColumns: string[] = [
+    'idTurno',
+    'Fecha',
+    'Hora',
+    'IdUsuario',
+    'idMedico',
+    'Estado',
+    'actions',
+  ];
   dataSource = new MatTableDataSource<any>();
   showOptions = false;
 
-  constructor(
-    private sqlService: BaseSQLService,
-    private router : Router
-  ){}
-
+  constructor(private sqlService: BaseSQLService, private router: Router) {}
 
   ngOnInit(): void {
-    if(localStorage.getItem('idTipoUsuario')==='2'){
+    if (localStorage.getItem('idTipoUsuario') === '2') {
       this.router.navigate(['/home']);
-    }else{
+    } else {
       const fecha = new Date();
-      this.loadData(this.formatDate(fecha))
+      this.loadData(this.formatDate(fecha));
     }
   }
 
   onDateChange(event: any): void {
     const fecha = event;
-    this.loadData(this.formatDate(fecha))
-
+    this.loadData(this.formatDate(fecha));
   }
 
-
-  loadData(date:string) {
+  loadData(date: string) {
     const emailMedico = localStorage.getItem('email');
 
     this.sqlService.getbyturno(date).subscribe((turnos: any) => {
       this.sqlService.getUsuarios().subscribe((usuarios: any) => {
-        const userMap = new Map(usuarios.map((user: any) => [user.idUsuario, `${user.Nombre} ${user.Apellido}`]));
+        const userMap = new Map(
+          usuarios.map((user: any) => [
+            user.idUsuario,
+            `${user.Nombre} ${user.Apellido}`,
+          ])
+        );
         turnos.forEach((turno: any) => {
           turno.IdUsuario = userMap.get(turno.IdUsuario) || turno.IdUsuario;
         });
@@ -72,12 +88,21 @@ export class HomemedicoComponent implements OnInit {
       });
 
       this.sqlService.getMedicos().subscribe((medicos: any) => {
-        const medicoMap = new Map(medicos.map((medico: any) => [medico.idMedico, `${medico.Nombre} ${medico.Apellido}`]));
-        const medicoEmailMap = new Map(medicos.map((medico: any) => [medico.Email, medico.idMedico]));
+        const medicoMap = new Map(
+          medicos.map((medico: any) => [
+            medico.idMedico,
+            `${medico.Nombre} ${medico.Apellido}`,
+          ])
+        );
+        const medicoEmailMap = new Map(
+          medicos.map((medico: any) => [medico.Email, medico.idMedico])
+        );
 
         // Filtra los turnos que coinciden con el médico correspondiente
         const idMedico = medicoEmailMap.get(emailMedico);
-        let filteredTurnos = turnos.filter((turno: any) => turno.idMedico === idMedico);
+        let filteredTurnos = turnos.filter(
+          (turno: any) => turno.idMedico === idMedico
+        );
 
         filteredTurnos.forEach((turno: any) => {
           turno.idMedico = medicoMap.get(turno.idMedico) || turno.idMedico;
@@ -95,10 +120,8 @@ export class HomemedicoComponent implements OnInit {
   updateEstado(element: any, estado: string) {
     element.Estado = estado;
     //Aquí puedes agregar una llamada al servicio para actualizar el estado en la base de datos si es necesario.
-    this.sqlService.putTurno(element.idTurno, estado)
+    this.sqlService.putTurno(element.idTurno, estado);
   }
-
-
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -106,7 +129,6 @@ export class HomemedicoComponent implements OnInit {
   }
 
   formatDate(date: Date): string {
-
     const year = date.getFullYear();
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
@@ -125,6 +147,4 @@ export class HomemedicoComponent implements OnInit {
     this.router.navigate(['/login']);
     localStorage.clear();
   }
-
-
 }

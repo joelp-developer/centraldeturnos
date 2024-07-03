@@ -4,31 +4,48 @@
       <mat-card-title>Central de Turnos</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p>Olvidaste tu password?</p>
+      <p>Olvidaste la Contraseña?</p>
 
       <form class="example-form">
         <mat-form-field class="example-full-width">
-          <mat-label>Email</mat-label>
+          <mat-label>Mail</mat-label>
           <mat-icon matSuffix>email</mat-icon>
-          <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. pat@example.com">
-          @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
-            <mat-error>Please enter a valid email address</mat-error>
-          }
-          @if (emailFormControl.hasError('required')) {
-            <mat-error>Email is <strong>required</strong></mat-error>
+          <input
+            type="email"
+            matInput
+            [formControl]="emailFormControl"
+            placeholder="Ex. pat@example.com"
+          />
+          @if (emailFormControl.hasError('email') &&
+          !emailFormControl.hasError('required')) {
+          <mat-error>Porfavor ingrese un mail valido</mat-error>
+          } @if (emailFormControl.hasError('required')) {
+          <mat-error>Mail es <strong>requerido</strong></mat-error>
           }
         </mat-form-field>
-        <br>
+        <br />
       </form>
       <mat-divider></mat-divider>
     </mat-card-content>
     <mat-card-actions class="botones">
+      <button
+        class="btnlogin"
+        mat-flat-button
+        color="primary"
+        [disabled]="emailFormControl.invalid"
+        (click)="forgot()"
+      >
+        Enviar
+      </button>
 
-      <button class="btnlogin" mat-flat-button color="primary" [disabled]="emailFormControl.invalid" (click)="forgot()">ENVIAR</button>
-
-      <button class="btnlogin" mat-flat-button color="accent" (click)="volver()">Volver al LOGIN</button>
-
+      <button
+        class="btnlogin"
+        mat-flat-button
+        color="accent"
+        (click)="volver()"
+      >
+        Volver al Login
+      </button>
     </mat-card-actions>
   </mat-card>
 </div>
-

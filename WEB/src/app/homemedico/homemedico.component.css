@@ -3,6 +3,25 @@ table {
   width: 100%;
 }
 
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 140%;
+  background-image: url(https://clinica-web.com.ar/wp-content/uploads/2021/07/turnos-hospitales-publicos.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: blur(2px);
+  z-index: -1;
+}
+
+.cancel {
+  padding-right: 0.75rem;
+  font-size: 25px;
+}
+
 .mat-mdc-form-field {
   font-size: 14px;
   width: 100%;
